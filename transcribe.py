@@ -22,7 +22,7 @@ def split_newlines(content, n=64):
     return content_newlines
 
 
-def transcribe_file(input_language, method, path, bucket_name):
+def transcribe_file(input_language, mode, path, bucket_name):
     """Asynchronously transcribes the audio file specified."""
 
     if input_language == 'fr':
@@ -36,7 +36,7 @@ def transcribe_file(input_language, method, path, bucket_name):
     )
 
     # file on GCS
-    if method == "gcs":
+    if mode == "gcs":
         audio = speech.RecognitionAudio(uri=f"{gs_uri_prefix}/{path}")
     # local file
     else:
@@ -66,10 +66,10 @@ def transcribe_file(input_language, method, path, bucket_name):
 if __name__ == "__main__":
 
     load_dotenv()
-    method = sys.argv[1]
+    mode = sys.argv[1]
     audio_file_path = sys.argv[2]
     input_language = sys.argv[3]
     bucket_name = os.getenv("BUCKET_NAME")
     gs_uri_prefix = f"gs://{bucket_name}"
 
-    transcribe_file(input_language, method, audio_file_path, gs_uri_prefix)
+    transcribe_file(input_language, mode, audio_file_path, gs_uri_prefix)
