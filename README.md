@@ -1,7 +1,5 @@
 # Asynchronous transcription: GCP's Speech to Text API
 
-** WORK IN PROGRESS **
-
 This repo contains a tool to transcribe audio files using Google Cloud Platform's Speech to Text asynchronous API.
 
 ## Setup
@@ -59,3 +57,11 @@ To transcribe a file in English at the root of your GCS bucket named "test-stt-e
 ```
 python transcribe.py gcs "test-stt-en.wav" en
 ```
+
+## Output
+
+In the command line, you'll see the output split each time there is a pause.  
+For each part, you'll see the transcription as well as the confidence level.  
+
+The overall transcription is also saved in a txt file located in the *transcripts* directory.
+
