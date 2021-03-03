@@ -8,7 +8,7 @@ This repo contains a tool to transcribe audio files using Google Cloud Platform'
 
 To test this, you need to have a GCP account. You can start a free trial with $300 GCP credits.
 
-1. Create a new project or use an existing one and enable the with the Speech To Text API
+1. Create a new project or use an existing one and enable the Speech To Text API
 2. [Create a service account](https://console.cloud.google.com/apis/credentials/serviceaccountkey) and save the config file provided
 3. If you want to transcribe audio files in GCS (Google Cloud Storage), [create a new storage bucket](https://console.cloud.google.com/storage/browser).
 4. Download or clone this repo
@@ -26,7 +26,7 @@ GOOGLE_APPLICATION_CREDENTIALS="config.json"
 BUCKET_NAME="<YOUR_BUCKET_NAME>"
 ```
 
-If you don't want to use GCS, leave the bucket name blank
+**Note:** If you don't want to use GCS, leave the bucket name blank
 
 ## Usage
 
