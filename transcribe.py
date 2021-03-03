@@ -1,4 +1,3 @@
-import io
 import logging
 import sys
 import os
@@ -11,13 +10,28 @@ def save_transcript(filename, content, directory="transcripts"):
 
     if not os.path.exists(directory):
         os.makedirs(directory)
-    with io.open(f"{directory}/{filename}.txt", "w+") as transcript_file:
+    with open(f"{directory}/{filename}.txt", "w+", encoding="utf-8") as transcript_file:
         transcript_file.write(content)
 
 def split_newlines(content, n=64):
-    """Splits a string every n characters by adding a newline."""
+    """Splits a string every n+m characters (with m the number of characters until there is a space) by adding a newline if there are no newlines in between"""
 
-    content_newlines = '\n'.join(content[i:i+n] for i in range(0, len(content), n))
+    count = 0
+    content_newlines = ''
+
+    for i in range(len(content)):
+        if content[i] == '\n':
+            count = 0
+        if count == n:
+            # Find next space to split
+            if content[i] == ' ':
+                content_newlines += '\n'
+                count = 0
+            else:
+                content_newlines += content[i]
+        else:
+            count += 1
+            content_newlines += content[i]
 
     return content_newlines
 
@@ -40,7 +54,7 @@ def transcribe_file(input_language, mode, path, bucket_name):
         audio = speech.RecognitionAudio(uri=f"{gs_uri_prefix}/{path}")
     # local file
     else:
-        with io.open(path, "rb") as audio_file:
+        with open(path, "rb") as audio_file:
             content = audio_file.read()
         audio = speech.RecognitionAudio(content=content)
 
@@ -57,6 +71,7 @@ def transcribe_file(input_language, mode, path, bucket_name):
         print(u"Transcript: {}".format(result.alternatives[0].transcript))
         print("Confidence: {}".format(result.alternatives[0].confidence))
         content += result.alternatives[0].transcript
+        content += "\n"
 
     content_newlines = split_newlines(content)
     filename = path.split('/')[-1]
